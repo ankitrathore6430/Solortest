@@ -1,8 +1,6 @@
-node_modules/
-build/
-dist/
-coverage/
-.DS_Store
-*.log
-.env*
-!.env.example
+# Ignore everything by default
+/*
+
+# Allow only index.html and .gitignore
+!/.gitignore
+!/index.html
