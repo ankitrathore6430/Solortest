@@ -5,17 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Solor Energy - Premium</title>
     
-    <!-- PWA & Mobile Meta Tags -->
-    <meta name="theme-color" content="#6366f1">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Solor Energy">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512.png">
-    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -350,29 +339,6 @@
             justify-content: center;
             gap: 10px;
         }
-
-        /* PWA Install & Add to Home Screen Styles */
-        .header-install-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: var(--white);
-            padding: 8px 14px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .header-install-btn:hover {
-            background: var(--white);
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
     </style>
 </head>
 <body>
@@ -440,14 +406,9 @@
                     <p>Refer & Earn</p>
                 </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <button id="headerInstallBtn" onclick="onInstallIconClick()" class="header-install-btn" title="Add to Home Screen / Install App">
-                    <i class="fas fa-download"></i> <span>Install</span>
-                </button>
-                <div class="header-balance" onclick="showPage('wallet')">
-                    <div class="label">Balance</div>
-                    <div class="amount">₹<span id="headerBalance">0</span></div>
-                </div>
+            <div class="header-balance" onclick="showPage('wallet')">
+                <div class="label">Balance</div>
+                <div class="amount">₹<span id="headerBalance">0</span></div>
             </div>
         </div>
     </header>
@@ -485,9 +446,6 @@
         <div style="padding: 20px;">
             <button class="btn-main btn-main-primary" onclick="showPage('register')"><i class="fas fa-rocket"></i> Start Earning Now - It's FREE!</button>
             <button class="btn-main" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);" onclick="showPage('login')"><i class="fas fa-sign-in-alt"></i> Already have an account? Login</button>
-            <button class="btn-main" id="landingInstallBtn" style="background: rgba(99, 102, 241, 0.08); color: var(--primary); border: 1px dashed var(--primary); margin-top: 10px;" onclick="onInstallIconClick()">
-                <i class="fas fa-download"></i> Install Solor Energy App
-            </button>
         </div>
     </div>
 
@@ -853,12 +811,6 @@
         </div>
 
         <div class="premium-card" style="padding: 10px;">
-            <div id="profileInstallItem" style="display: flex; align-items: center; gap: 15px; padding: 20px; cursor: pointer;" onclick="onInstallIconClick()">
-                <div style="width: 45px; height: 45px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;"><i class="fas fa-mobile-alt"></i></div>
-                <div style="flex: 1;"><div style="font-weight: 600;">Install App / Home Screen</div><div style="font-size: 13px; color: var(--gray);">Direct phone access & faster speed</div></div>
-                <i class="fas fa-chevron-right" style="color: var(--gray-light);"></i>
-            </div>
-            <div style="height: 1px; background: var(--light); margin: 0 20px;"></div>
             <div style="display: flex; align-items: center; gap: 15px; padding: 20px; cursor: pointer;" onclick="showPage('wallet')">
                 <div style="width: 45px; height: 45px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;"><i class="fas fa-wallet"></i></div>
                 <div style="flex: 1;"><div style="font-weight: 600;">Wallet Settings</div><div style="font-size: 13px; color: var(--gray);">Manage payment methods</div></div>
@@ -1190,9 +1142,6 @@
             if(rPass) ['input', 'change', 'keyup', 'blur'].forEach(ev => rPass.addEventListener(ev, updateRegButtonState));
             if(rConf) ['input', 'change', 'keyup', 'blur'].forEach(ev => rConf.addEventListener(ev, updateRegButtonState));
             updateRegButtonState();
-
-            // Initialize PWA and check for install prompt
-            initPWAInstallPrompt();
         };
 
         function setupUserListener(userId) {
@@ -1825,115 +1774,6 @@
             try { await database.ref('tickets').push(ticket); hideLoading(); showToast('Ticket created!', 'success'); document.getElementById('ticketForm').reset(); loadSupportData(); } 
             catch (error) { hideLoading(); showToast('Failed to create ticket', 'error'); }
         });
-
-        // ==================== PWA & DIRECT 1-CLICK SHORTCUT PROMPT ====================
-        let deferredInstallPrompt = null;
-        let isWaitingForInstallPrompt = false;
-
-        function isRunningStandalone() {
-            return window.matchMedia('(display-mode: standalone)').matches ||
-                   window.navigator.standalone === true ||
-                   document.referrer.includes('android-app://');
-        }
-
-        function isIOSDevice() {
-            return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) && !window.MSStream;
-        }
-
-        function updateInstallButtonVisibility(show) {
-            const isInstalled = isRunningStandalone();
-            const shouldShow = show && !isInstalled;
-            
-            const headerBtn = document.getElementById('headerInstallBtn');
-            if(headerBtn) headerBtn.style.display = shouldShow ? 'inline-flex' : 'none';
-            
-            const landingBtn = document.getElementById('landingInstallBtn');
-            if(landingBtn) landingBtn.style.display = shouldShow ? 'block' : 'none';
-
-            const profItem = document.getElementById('profileInstallItem');
-            if(profItem) profItem.style.display = shouldShow ? 'flex' : 'none';
-        }
-
-        // Direct 1-Click: Prompt opens browser native "Add to Home screen" immediately (NO instructions modal)
-        async function onInstallIconClick() {
-            if (isRunningStandalone()) {
-                showToast('App already installed on your Home Screen!', 'info');
-                return;
-            }
-
-            // Direct native prompt if already captured
-            if (deferredInstallPrompt) {
-                try {
-                    await deferredInstallPrompt.prompt();
-                    const choice = await deferredInstallPrompt.userChoice;
-                    if (choice && choice.outcome === 'accepted') {
-                        showToast('Shortcut created successfully!', 'success');
-                    }
-                    deferredInstallPrompt = null;
-                } catch(err) {
-                    console.log('Install prompt error:', err);
-                }
-                return;
-            }
-
-            // If prompt event hasn't fired yet, mark waiting flag and prompt immediately as soon as ready
-            isWaitingForInstallPrompt = true;
-
-            if (isIOSDevice()) {
-                showToast('Tap Safari Share (⎙) ➔ Add to Home Screen', 'info');
-                return;
-            }
-
-            // In Chromium/Android, if not yet cached, notify shortly without showing any modal
-            setTimeout(() => {
-                if (isWaitingForInstallPrompt && !deferredInstallPrompt) {
-                    isWaitingForInstallPrompt = false;
-                    showToast('Tap browser (⋮) menu ➔ Add to Home screen', 'info');
-                }
-            }, 800);
-        }
-
-        function initPWAInstallPrompt() {
-            if (isRunningStandalone()) {
-                updateInstallButtonVisibility(false);
-                return;
-            }
-
-            // Register service worker
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').catch(err => {
-                    console.log('SW registration note:', err);
-                });
-            }
-
-            // Capture native browser beforeinstallprompt
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredInstallPrompt = e;
-                updateInstallButtonVisibility(true);
-
-                // If user already clicked the button, open the native prompt immediately!
-                if (isWaitingForInstallPrompt) {
-                    isWaitingForInstallPrompt = false;
-                    onInstallIconClick();
-                }
-            });
-
-            // Listen for successful install
-            window.addEventListener('appinstalled', () => {
-                deferredInstallPrompt = null;
-                localStorage.setItem('solor_app_installed', 'true');
-                updateInstallButtonVisibility(false);
-                showToast('App added to Home Screen!', 'success');
-            });
-
-            // Ensure button is visible for non-standalone users
-            setTimeout(() => {
-                if (!isRunningStandalone()) {
-                    updateInstallButtonVisibility(true);
-                }
-            }, 300);
-        }
     </script>
 </body>
 </html>
