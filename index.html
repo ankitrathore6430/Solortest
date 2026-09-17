@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Solor Energy - Premium</title>
     
+    <!-- PWA & Mobile Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Solor Energy">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512.png">
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -339,6 +350,163 @@
             justify-content: center;
             gap: 10px;
         }
+
+        /* PWA Install & Add to Home Screen Styles */
+        .header-install-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--white);
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .header-install-btn:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .install-modal-content {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 24px 20px;
+            max-width: 400px;
+            width: 92%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(0,0,0,0.06);
+            animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .install-app-logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: var(--gradient-1);
+            color: white;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+            flex-shrink: 0;
+        }
+        .install-badge {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 3px;
+        }
+        .install-banner {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin: 15px 0;
+        }
+        .install-features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px 0 20px;
+        }
+        .install-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+        .install-feature-item i {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        .install-feature-item i.text-accent { color: var(--accent); background: rgba(245, 158, 11, 0.15); }
+        .install-feature-item i.text-success { color: var(--success); background: rgba(16, 185, 129, 0.15); }
+        .install-feature-item i.text-primary { color: var(--primary); background: rgba(99, 102, 241, 0.15); }
+        .install-cta-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 16px;
+        }
+        .btn-install-later {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 12px;
+            color: var(--gray);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .btn-install-later:hover {
+            background: var(--light);
+            color: var(--dark);
+        }
+        .ios-install-guide {
+            background: var(--light);
+            border-radius: 18px;
+            padding: 16px;
+            margin-top: 10px;
+        }
+        .ios-steps-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .ios-step-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--dark-light);
+            line-height: 1.4;
+        }
+        .ios-step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -396,6 +564,73 @@
         </div>
     </div>
 
+    <!-- INSTALL APP / ADD TO HOME SCREEN MODAL -->
+    <div id="installAppModal" class="modal-overlay">
+        <div class="modal-content install-modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="install-app-logo">☀️</div>
+                    <div>
+                        <h3 id="installModalTitle" style="font-size: 18px; font-weight: 800; color: var(--dark); line-height: 1.2;">Install Solor Energy</h3>
+                        <span class="install-badge"><i class="fas fa-check-circle"></i> Official Web App</span>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeInstallModal(true)" aria-label="Close" style="background: rgba(0,0,0,0.06); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"><i class="fas fa-times" style="font-size: 14px;"></i></button>
+            </div>
+
+            <div class="install-banner">
+                <div style="font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">📲 Add to Home Screen</div>
+                <p style="font-size: 12px; color: var(--dark); opacity: 0.85;">Apne phone ki home screen par add karein aur bina kisi jhanjhat ke instant access paayein!</p>
+            </div>
+
+            <div class="install-features-list">
+                <div class="install-feature-item">
+                    <i class="fas fa-bolt text-accent"></i>
+                    <div><strong>Super Fast Loading:</strong> Bina browser URL dale direct 1-click me open</div>
+                </div>
+                <div class="install-feature-item">
+                    <i class="fas fa-gift text-success"></i>
+                    <div><strong>Daily Bonus Claim:</strong> Rozana daily reward claim karna aur bhi aasaan</div>
+                </div>
+                <div class="install-feature-item">
+                    <i class="fas fa-shield-alt text-primary"></i>
+                    <div><strong>Safe & Lightweight:</strong> Sirf 1 MB se kam space, koi slow down nahi</div>
+                </div>
+            </div>
+
+            <!-- Standard Install Button Area -->
+            <div id="installActionArea">
+                <button class="btn-main btn-main-primary install-cta-btn" id="nativeInstallBtn" onclick="triggerPWAInstall()">
+                    <i class="fas fa-download"></i> <span id="nativeInstallBtnText">Add to Home Screen / Install</span>
+                </button>
+                <div id="browserManualGuide" style="display: none; background: var(--light); border-radius: 12px; padding: 12px; margin-top: 12px; font-size: 12px; color: var(--gray); text-align: center;">
+                    <i class="fas fa-info-circle text-primary"></i> Agar popup na khule, to browser ke <strong>3-dots (⋮)</strong> menu par click karke <strong>"Add to Home screen"</strong> ya <strong>"Install app"</strong> chunein.
+                </div>
+                <button type="button" class="btn-install-later" onclick="closeInstallModal(true)">
+                    Baad me karein (Remind Later)
+                </button>
+            </div>
+
+            <!-- iOS Safari Guide -->
+            <div id="iosInstallGuide" class="ios-install-guide" style="display: none;">
+                <div class="ios-steps-title"><i class="fab fa-apple" style="margin-right: 6px; font-size: 16px;"></i> iPhone / iPad Par Kaise Add Karein:</div>
+                <div class="ios-step-box">
+                    <div class="ios-step-num">1</div>
+                    <div>Safari browser me niche <strong>Share</strong> button <i class="fas fa-share-square text-primary"></i> par click karein.</div>
+                </div>
+                <div class="ios-step-box">
+                    <div class="ios-step-num">2</div>
+                    <div>Thoda scroll karke <strong>'Add to Home Screen'</strong> <i class="fas fa-plus-square text-primary"></i> par tap karein.</div>
+                </div>
+                <div class="ios-step-box">
+                    <div class="ios-step-num">3</div>
+                    <div>Top right corner me <strong>'Add'</strong> button dabayein. App add ho jayegi!</div>
+                </div>
+                <button type="button" class="btn-main btn-main-primary" onclick="closeInstallModal(true)" style="margin-top: 15px; padding: 12px; width: 100%;">Samajh Gaya (Close)</button>
+            </div>
+        </div>
+    </div>
+
     <!-- HEADER -->
     <header class="premium-header" id="mainHeader" style="display: none;">
         <div class="header-content">
@@ -406,9 +641,14 @@
                     <p>Refer & Earn</p>
                 </div>
             </div>
-            <div class="header-balance" onclick="showPage('wallet')">
-                <div class="label">Balance</div>
-                <div class="amount">₹<span id="headerBalance">0</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <button id="headerInstallBtn" onclick="onInstallIconClick()" class="header-install-btn" title="Add to Home Screen / Install App">
+                    <i class="fas fa-download"></i> <span>Install</span>
+                </button>
+                <div class="header-balance" onclick="showPage('wallet')">
+                    <div class="label">Balance</div>
+                    <div class="amount">₹<span id="headerBalance">0</span></div>
+                </div>
             </div>
         </div>
     </header>
@@ -446,6 +686,9 @@
         <div style="padding: 20px;">
             <button class="btn-main btn-main-primary" onclick="showPage('register')"><i class="fas fa-rocket"></i> Start Earning Now - It's FREE!</button>
             <button class="btn-main" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);" onclick="showPage('login')"><i class="fas fa-sign-in-alt"></i> Already have an account? Login</button>
+            <button class="btn-main" id="landingInstallBtn" style="background: rgba(99, 102, 241, 0.08); color: var(--primary); border: 1px dashed var(--primary); margin-top: 10px;" onclick="onInstallIconClick()">
+                <i class="fas fa-download"></i> Install Solor Energy App
+            </button>
         </div>
     </div>
 
@@ -811,6 +1054,12 @@
         </div>
 
         <div class="premium-card" style="padding: 10px;">
+            <div id="profileInstallItem" style="display: flex; align-items: center; gap: 15px; padding: 20px; cursor: pointer;" onclick="onInstallIconClick()">
+                <div style="width: 45px; height: 45px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;"><i class="fas fa-mobile-alt"></i></div>
+                <div style="flex: 1;"><div style="font-weight: 600;">Install App / Home Screen</div><div style="font-size: 13px; color: var(--gray);">Direct phone access & faster speed</div></div>
+                <i class="fas fa-chevron-right" style="color: var(--gray-light);"></i>
+            </div>
+            <div style="height: 1px; background: var(--light); margin: 0 20px;"></div>
             <div style="display: flex; align-items: center; gap: 15px; padding: 20px; cursor: pointer;" onclick="showPage('wallet')">
                 <div style="width: 45px; height: 45px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;"><i class="fas fa-wallet"></i></div>
                 <div style="flex: 1;"><div style="font-weight: 600;">Wallet Settings</div><div style="font-size: 13px; color: var(--gray);">Manage payment methods</div></div>
@@ -1142,6 +1391,9 @@
             if(rPass) ['input', 'change', 'keyup', 'blur'].forEach(ev => rPass.addEventListener(ev, updateRegButtonState));
             if(rConf) ['input', 'change', 'keyup', 'blur'].forEach(ev => rConf.addEventListener(ev, updateRegButtonState));
             updateRegButtonState();
+
+            // Initialize PWA and check for install prompt
+            initPWAInstallPrompt();
         };
 
         function setupUserListener(userId) {
@@ -1774,6 +2026,157 @@
             try { await database.ref('tickets').push(ticket); hideLoading(); showToast('Ticket created!', 'success'); document.getElementById('ticketForm').reset(); loadSupportData(); } 
             catch (error) { hideLoading(); showToast('Failed to create ticket', 'error'); }
         });
+
+        // ==================== PWA & DIRECT INSTALL CLICK LOGIC ====================
+        let deferredInstallPrompt = null;
+
+        function isRunningStandalone() {
+            return window.matchMedia('(display-mode: standalone)').matches ||
+                   window.navigator.standalone === true ||
+                   document.referrer.includes('android-app://');
+        }
+
+        function isIOSDevice() {
+            return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) && !window.MSStream;
+        }
+
+        function updateInstallButtonVisibility(show) {
+            const isInstalled = isRunningStandalone();
+            const shouldShow = show && !isInstalled;
+            
+            const headerBtn = document.getElementById('headerInstallBtn');
+            if(headerBtn) headerBtn.style.display = shouldShow ? 'inline-flex' : 'none';
+            
+            const landingBtn = document.getElementById('landingInstallBtn');
+            if(landingBtn) landingBtn.style.display = shouldShow ? 'block' : 'none';
+
+            const profItem = document.getElementById('profileInstallItem');
+            if(profItem) profItem.style.display = shouldShow ? 'flex' : 'none';
+        }
+
+        // Direct click handler: Immediately prompts Add to Home Screen without unnecessary auto-popups
+        async function onInstallIconClick() {
+            if(isRunningStandalone()) {
+                showToast('App is already installed on your Home Screen!', 'info');
+                return;
+            }
+
+            // Direct native browser prompt if available
+            if(deferredInstallPrompt) {
+                try {
+                    await deferredInstallPrompt.prompt();
+                    const choice = await deferredInstallPrompt.userChoice;
+                    if(choice && choice.outcome === 'accepted') {
+                        showToast('Installing Solor Energy app...', 'success');
+                    }
+                    deferredInstallPrompt = null;
+                } catch(err) {
+                    console.log('Direct install prompt error:', err);
+                    openInstallModal();
+                }
+            } else if(isIOSDevice()) {
+                // Safari iOS cannot trigger install programmatically - open step-by-step guidance
+                openInstallModal();
+            } else {
+                // Fallback for browsers needing manual menu action
+                openInstallModal();
+            }
+        }
+
+        function openInstallModal() {
+            const modal = document.getElementById('installAppModal');
+            if(!modal) return;
+            
+            if(isIOSDevice()) {
+                const iosGuide = document.getElementById('iosInstallGuide');
+                const actionArea = document.getElementById('installActionArea');
+                if(iosGuide) iosGuide.style.display = 'block';
+                if(actionArea) actionArea.style.display = 'none';
+                const title = document.getElementById('installModalTitle');
+                if(title) title.textContent = 'Add to Home Screen';
+            } else {
+                const iosGuide = document.getElementById('iosInstallGuide');
+                const actionArea = document.getElementById('installActionArea');
+                if(iosGuide) iosGuide.style.display = 'none';
+                if(actionArea) actionArea.style.display = 'block';
+                const manualGuide = document.getElementById('browserManualGuide');
+                if(manualGuide) {
+                    manualGuide.style.display = deferredInstallPrompt ? 'none' : 'block';
+                }
+            }
+            modal.classList.add('active');
+        }
+
+        function closeInstallModal(userDismissed) {
+            const modal = document.getElementById('installAppModal');
+            if(modal) modal.classList.remove('active');
+            if(userDismissed) {
+                localStorage.setItem('pwa_dismissed_at', Date.now().toString());
+            }
+        }
+
+        async function triggerPWAInstall() {
+            if(deferredInstallPrompt) {
+                try {
+                    await deferredInstallPrompt.prompt();
+                    const choice = await deferredInstallPrompt.userChoice;
+                    if(choice && choice.outcome === 'accepted') {
+                        showToast('Installing Solor Energy app...', 'success');
+                        closeInstallModal(false);
+                    }
+                    deferredInstallPrompt = null;
+                } catch(err) {
+                    console.log('Install prompt error:', err);
+                }
+            } else if(isIOSDevice()) {
+                const iosGuide = document.getElementById('iosInstallGuide');
+                const actionArea = document.getElementById('installActionArea');
+                if(iosGuide) iosGuide.style.display = 'block';
+                if(actionArea) actionArea.style.display = 'none';
+            } else {
+                const manualGuide = document.getElementById('browserManualGuide');
+                if(manualGuide) manualGuide.style.display = 'block';
+                showToast('Tap browser menu (⋮) and choose "Add to Home screen"', 'info');
+            }
+        }
+
+        function initPWAInstallPrompt() {
+            if(isRunningStandalone()) {
+                updateInstallButtonVisibility(false);
+                return;
+            }
+
+            // Register service worker if supported
+            if('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('SW registration note:', err);
+                });
+            }
+
+            // Listen for Chrome/Android install prompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredInstallPrompt = e;
+                updateInstallButtonVisibility(true);
+                // NO auto popup! The icon alone is shown; prompt triggers ONLY when user clicks.
+            });
+
+            // Listen for successful install
+            window.addEventListener('appinstalled', () => {
+                deferredInstallPrompt = null;
+                localStorage.setItem('solor_app_installed', 'true');
+                updateInstallButtonVisibility(false);
+                closeInstallModal(false);
+                showToast('Solor Energy App installed on Home Screen!', 'success');
+            });
+
+            // Ensure icon is visible if not in standalone
+            setTimeout(() => {
+                if(!isRunningStandalone()) {
+                    updateInstallButtonVisibility(true);
+                }
+            }, 500);
+        }
     </script>
 </body>
 </html>
