@@ -241,13 +241,15 @@
                 <div class="content-card">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fas fa-users"></i> All Users</h3>
-                        <input type="text" id="searchUsers" class="form-input" placeholder="Search by phone..." style="width: 250px;" onkeyup="loadUsers()">
+                        <input type="text" id="searchUsers" class="form-input" placeholder="Search phone, name, ID, refer code..." style="width: 280px;" onkeyup="loadUsers()">
                     </div>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>Name/Phone</th>
+                                    <th>User ID</th>
+                                    <th>Refer Code</th>
                                     <th>Balance</th>
                                     <th>Refers</th>
                                     <th>Join Date</th>
@@ -778,7 +780,9 @@
                 users = users.filter(u => {
                     const phone = (u.phone || '').toString().toLowerCase();
                     const name = (u.name || '').toLowerCase();
-                    return phone.includes(searchQuery) || name.includes(searchQuery);
+                    const uid = (u.id || '').toString().toLowerCase();
+                    const refCode = (u.referralCode || '').toString().toLowerCase();
+                    return phone.includes(searchQuery) || name.includes(searchQuery) || uid.includes(searchQuery) || refCode.includes(searchQuery);
                 });
             }
             
@@ -792,7 +796,7 @@
             const tbody = document.getElementById('usersTableBody');
             
             if(users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: var(--gray);">No users found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 40px; color: var(--gray);">No users found</td></tr>';
                 return;
             }
             
@@ -807,6 +811,12 @@
                     <td>
                         <div style="font-weight: 600;">${u.name || 'Unknown'}</div>
                         <div style="font-size: 12px; color: var(--gray);">${u.phone || '--'}</div>
+                    </td>
+                    <td>
+                        <span style="font-family: monospace; font-size: 11px; background: var(--light); padding: 4px 8px; border-radius: 6px; font-weight: 600; color: var(--dark); border: 1px solid #e2e8f0; display: inline-block;">${u.id || '--'}</span>
+                    </td>
+                    <td>
+                        <span style="font-family: monospace; font-size: 11px; background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(99, 102, 241, 0.2); display: inline-block;">${u.referralCode || '--'}</span>
                     </td>
                     <td style="font-weight: bold; color: var(--success);">₹${balance}</td>
                     <td>${refers}</td>
@@ -848,6 +858,18 @@
                     </div>
                 </div>
                 <div style="background: var(--light); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: var(--gray);">User ID:</span>
+                        <span style="font-family: monospace; font-weight: 700; color: var(--dark);">${u.id || '--'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: var(--gray);">Refer Code:</span>
+                        <span style="font-family: monospace; font-weight: 700; color: var(--primary);">${u.referralCode || '--'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: var(--gray);">Referred By:</span>
+                        <span style="font-weight: 600;">${u.referredBy || '--'}</span>
+                    </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                         <span style="color: var(--gray);">Join Date:</span>
                         <span style="font-weight: 600;">${joinDate}</span>
