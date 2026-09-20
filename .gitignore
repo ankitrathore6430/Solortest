@@ -1,6 +1,7 @@
 # Ignore everything by default
 /*
 
-# Allow only index.html and .gitignore
+# Allow only index.html, admin.html, and .gitignore
 !/.gitignore
 !/index.html
+!/admin.html
