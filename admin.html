@@ -377,24 +377,19 @@
                         <h3 class="card-title"><i class="fas fa-cog" style="color: var(--primary);"></i> App & System Settings</h3>
                     </div>
                     <form onsubmit="saveAppSettings(event)">
-                        <!-- NEW WITHDRAWAL CONDITION RULE -->
-                        <div class="form-group" style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 18px; margin-bottom: 22px;">
-                            <label style="color: #92400e; font-size: 14px;">
-                                <i class="fas fa-shield-alt" style="margin-right: 6px;"></i> Withdrawal Condition / Requirement
-                            </label>
-                            <select id="settingWithdrawalRule" class="form-control" style="font-weight: 600; border-color: #f59e0b; margin-top: 6px;">
-                                <option value="none">Kuchh Bhi Nahi (Sabhi users bina shart withdraw kar sakte hain)</option>
-                                <option value="plan">Plan Buy Mandatory (Kam se kam 1 Plan buy zaroori)</option>
-                                <option value="deposit">Deposit Mandatory (Kam se kam 1 Deposit zaroori)</option>
-                                <option value="both">Plan + Deposit Dono Mandatory (Plan kharidna aur Deposit dono)</option>
+                        <div class="form-group">
+                            <label><i class="fas fa-shield-alt"></i> Withdrawal Requirement Condition</label>
+                            <select id="settingWithdrawalRule" class="form-control">
+                                <option value="none">No Requirement (Users can withdraw freely without restrictions)</option>
+                                <option value="plan">Plan Purchase Required (Must buy at least 1 Investment Plan)</option>
+                                <option value="deposit">Deposit Required (Must make at least 1 Deposit)</option>
+                                <option value="both">Both Plan & Deposit Required (Must buy plan and deposit)</option>
                             </select>
-                            <p class="form-help" style="color: #b45309; line-height: 1.45; margin-top: 8px;">
-                                💡 <strong>Manage karein:</strong> User withdrawal lagane jaye toh usse plan buy karna mandatory rakhna hai, deposit zaroori rakhna hai, ya bina kisi shart ke direct withdraw allow karna hai.
-                            </p>
+                            <p class="form-help">Select whether users must buy a plan, make a deposit, both, or have no requirement to request withdrawals.</p>
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fas fa-qrcode"></i> Admin UPI ID (Deposits ke liye)</label>
+                            <label><i class="fas fa-qrcode"></i> Admin UPI ID (For Deposits)</label>
                             <input type="text" id="settingUpi" class="form-control" placeholder="e.g. 6395503566@upi" required>
                         </div>
 
@@ -404,7 +399,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fas fa-gift"></i> Referral Bonus Amount (₹ per refer)</label>
+                            <label><i class="fas fa-gift"></i> Referral Bonus Amount (₹ per referral)</label>
                             <input type="number" id="settingReferAmount" class="form-control" placeholder="e.g. 15" min="0" required>
                         </div>
 

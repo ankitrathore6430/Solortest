@@ -407,7 +407,7 @@
             </div>
             <h3 id="reqModalTitle" style="font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 8px;">Plan Required!</h3>
             <p id="reqModalDesc" style="font-size: 13px; color: var(--gray); line-height: 1.55; margin-bottom: 22px;">
-                Withdrawal lagane ke liye kam se kam <strong>1 Investment Plan</strong> buy karna mandatory hai. Kripya pehle plan buy karein.
+                To request a withdrawal, you must purchase at least <strong>1 Investment Plan</strong>. Please purchase a plan first.
             </p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <button type="button" id="reqModalActionBtn" class="btn-main" onclick="handleReqModalAction()" style="background: var(--gradient-1); color: white; width: 100%; font-weight: 600; padding: 13px; border-radius: 12px;">
@@ -1674,7 +1674,7 @@
                         eligible: false,
                         type: 'plan',
                         title: 'Plan Required!',
-                        message: 'Withdrawal lagane ke liye kam se kam 1 Investment Plan buy karna mandatory hai. Kripya pehle plan buy karein.',
+                        message: 'To request a withdrawal, you must purchase at least 1 Investment Plan. Please purchase a plan first.',
                         btnText: 'Buy Investment Plan',
                         btnIcon: 'fa-gem',
                         action: () => { closePlanRequiredModal(); showPage('plans'); }
@@ -1686,7 +1686,7 @@
                         eligible: false,
                         type: 'deposit',
                         title: 'Deposit Required!',
-                        message: 'Withdrawal lagane ke liye kam se kam 1 Deposit (Add Money) karna mandatory hai. Kripya pehle apne wallet me deposit karein.',
+                        message: 'To request a withdrawal, you must make at least 1 Deposit to your wallet. Please deposit funds first.',
                         btnText: 'Add Money (Deposit)',
                         btnIcon: 'fa-plus-circle',
                         action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
@@ -1696,12 +1696,12 @@
                 if(!hasPlan || !hasDeposit) {
                     let missing = [];
                     if(!hasDeposit) missing.push('1 Deposit');
-                    if(!hasPlan) missing.push('1 Investment Plan Buy');
+                    if(!hasPlan) missing.push('1 Investment Plan Purchase');
                     return {
                         eligible: false,
                         type: 'both',
-                        title: 'Requirement Pending!',
-                        message: `Withdrawal lagane ke liye ${missing.join(' aur ')} karna mandatory hai. Kripya pehle complete karein.`,
+                        title: 'Requirements Pending!',
+                        message: `To request a withdrawal, completing ${missing.join(' and ')} is required. Please complete them first.`,
                         btnText: !hasDeposit ? 'Add Money (Deposit)' : 'Buy Investment Plan',
                         btnIcon: !hasDeposit ? 'fa-plus-circle' : 'fa-gem',
                         action: () => {
