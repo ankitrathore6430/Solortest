@@ -1115,6 +1115,9 @@
                 document.getElementById('minWithdrawDisplay').textContent = MIN_WITHDRAWAL;
                 document.getElementById('withdrawAmount').min = MIN_WITHDRAWAL;
                 updateReferDisplays();
+                if(currentUser && typeof updateWithdrawSectionNotice === 'function') {
+                    updateWithdrawSectionNotice();
+                }
             });
 
             database.ref('plans').on('value', snap => {
@@ -1650,12 +1653,65 @@
         function hasUserDeposited() {
             if(!currentUser) return false;
             const txns = Object.values(currentUser.transactions || {});
-            const hasApprovedTxn = txns.some(t => 
-                (t.type === 'deposit_approved' || t.type === 'deposit' || t.type === 'admin_credit') && 
-                (t.status === 'approved' || !t.status)
+            return txns.some(t => 
+                (t.type === 'deposit_approved' || (t.type === 'deposit' && t.status === 'approved')) && 
+                t.status === 'approved'
             );
-            if(hasApprovedTxn) return true;
-            return false;
+        }
+
+        async function getUserDepositStatus() {
+            if(!currentUser) return { hasApproved: false, hasPending: false, hasRejected: false, pendingDeposit: null };
+
+            let hasApproved = false;
+            let hasPending = false;
+            let hasRejected = false;
+            let pendingDeposit = null;
+
+            // 1. Check transactions in currentUser
+            const txns = Object.values(currentUser.transactions || {});
+            for(const t of txns) {
+                const isDep = t.type === 'deposit_approved' || t.type === 'deposit_pending' || t.type === 'deposit_rejected' || t.type === 'deposit';
+                if(!isDep) continue;
+
+                if(t.status === 'approved' || t.type === 'deposit_approved') {
+                    hasApproved = true;
+                } else if(t.status === 'pending' || t.type === 'deposit_pending') {
+                    hasPending = true;
+                    if(!pendingDeposit) pendingDeposit = t;
+                } else if(t.status === 'rejected' || t.type === 'deposit_rejected') {
+                    hasRejected = true;
+                }
+            }
+
+            // 2. Direct query on Firebase 'deposits' node for real-time verification
+            try {
+                const snap = await database.ref('deposits').once('value');
+                if(snap.exists()) {
+                    const allDeps = snap.val() || {};
+                    for(const key in allDeps) {
+                        const d = allDeps[key];
+                        if(d && (d.userId === currentUser.id || (currentUser.phone && d.userPhone === currentUser.phone))) {
+                            if(d.status === 'approved') {
+                                hasApproved = true;
+                            } else if(d.status === 'pending') {
+                                hasPending = true;
+                                if(!pendingDeposit) pendingDeposit = d;
+                            } else if(d.status === 'rejected') {
+                                hasRejected = true;
+                            }
+                        }
+                    }
+                }
+            } catch(e) {
+                console.warn('Deposits verification check:', e);
+            }
+
+            return {
+                hasApproved,
+                hasPending,
+                hasRejected,
+                pendingDeposit
+            };
         }
 
         let reqModalActionCallback = null;
@@ -1668,12 +1724,16 @@
             const hasPlan = hasUserPurchasedPlan();
             const hasDeposit = hasUserDeposited();
 
+            const txns = Object.values(currentUser?.transactions || {});
+            const hasPendingDep = txns.some(t => (t.type === 'deposit_pending' || t.type === 'deposit') && t.status === 'pending');
+            const hasRejectedDep = txns.some(t => (t.type === 'deposit_rejected' || t.type === 'deposit') && t.status === 'rejected');
+
             if(rule === 'plan') {
                 if(!hasPlan) {
                     return {
                         eligible: false,
                         type: 'plan',
-                        title: 'Plan Required!',
+                        title: 'Investment Plan Required!',
                         message: 'To request a withdrawal, you must purchase at least 1 Investment Plan. Please purchase a plan first.',
                         btnText: 'Buy Investment Plan',
                         btnIcon: 'fa-gem',
@@ -1682,26 +1742,56 @@
                 }
             } else if(rule === 'deposit') {
                 if(!hasDeposit) {
-                    return {
-                        eligible: false,
-                        type: 'deposit',
-                        title: 'Deposit Required!',
-                        message: 'To request a withdrawal, you must make at least 1 Deposit to your wallet. Please deposit funds first.',
-                        btnText: 'Add Money (Deposit)',
-                        btnIcon: 'fa-plus-circle',
-                        action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
-                    };
+                    if(hasPendingDep) {
+                        return {
+                            eligible: false,
+                            type: 'deposit_pending',
+                            title: 'Deposit Approval Pending!',
+                            message: 'Your deposit request has been submitted and is waiting for admin approval. Withdrawals can only be processed after your deposit is approved by the admin.',
+                            btnText: 'View Deposit Status',
+                            btnIcon: 'fa-clock',
+                            action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('history'); }
+                        };
+                    } else if(hasRejectedDep) {
+                        return {
+                            eligible: false,
+                            type: 'deposit_rejected',
+                            title: 'Deposit Not Approved!',
+                            message: 'Your previous deposit request was rejected by the admin. Please make a valid deposit and get it approved by the admin before withdrawing.',
+                            btnText: 'Make New Deposit',
+                            btnIcon: 'fa-plus-circle',
+                            action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
+                        };
+                    } else {
+                        return {
+                            eligible: false,
+                            type: 'deposit',
+                            title: 'Deposit Required!',
+                            message: 'A deposit is mandatory before withdrawing. You cannot request a withdrawal until you make a deposit and it is approved by the admin.',
+                            btnText: 'Add Money (Deposit)',
+                            btnIcon: 'fa-plus-circle',
+                            action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
+                        };
+                    }
                 }
             } else if(rule === 'both') {
                 if(!hasPlan || !hasDeposit) {
-                    let missing = [];
-                    if(!hasDeposit) missing.push('1 Deposit');
-                    if(!hasPlan) missing.push('1 Investment Plan Purchase');
+                    if(!hasDeposit && hasPendingDep) {
+                        return {
+                            eligible: false,
+                            type: 'both',
+                            title: 'Deposit Approval Pending!',
+                            message: 'Your deposit is pending admin approval. Both an Investment Plan and an admin-approved deposit are mandatory before withdrawing.',
+                            btnText: !hasPlan ? 'Buy Investment Plan' : 'View Deposit Status',
+                            btnIcon: !hasPlan ? 'fa-gem' : 'fa-clock',
+                            action: () => { closePlanRequiredModal(); !hasPlan ? showPage('plans') : (showPage('wallet'), showWalletTab('history')); }
+                        };
+                    }
                     return {
                         eligible: false,
                         type: 'both',
-                        title: 'Requirements Pending!',
-                        message: `To request a withdrawal, completing ${missing.join(' and ')} is required. Please complete them first.`,
+                        title: 'Requirements Incomplete!',
+                        message: 'Both an Investment Plan purchase and an admin-approved deposit are mandatory before you can request a withdrawal.',
                         btnText: !hasDeposit ? 'Add Money (Deposit)' : 'Buy Investment Plan',
                         btnIcon: !hasDeposit ? 'fa-plus-circle' : 'fa-gem',
                         action: () => {
@@ -1716,6 +1806,141 @@
                 }
             }
             return { eligible: true };
+        }
+
+        async function checkWithdrawalEligibilityAsync() {
+            let rule = WITHDRAWAL_RULE || 'none';
+            try {
+                const sSnap = await database.ref('settings').once('value');
+                if(sSnap.exists() && sSnap.val()?.withdrawalRule) {
+                    rule = sSnap.val().withdrawalRule;
+                    WITHDRAWAL_RULE = rule;
+                }
+            } catch(e) {}
+
+            if(rule === 'none') {
+                return { eligible: true };
+            }
+
+            const hasPlan = hasUserPurchasedPlan();
+            const depStatus = await getUserDepositStatus();
+
+            if(rule === 'plan') {
+                if(!hasPlan) {
+                    return {
+                        eligible: false,
+                        type: 'plan',
+                        title: 'Investment Plan Required!',
+                        message: 'To request a withdrawal, you must purchase at least 1 Investment Plan. Please purchase a plan first.',
+                        btnText: 'Buy Investment Plan',
+                        btnIcon: 'fa-gem',
+                        action: () => { closePlanRequiredModal(); showPage('plans'); }
+                    };
+                }
+            } else if(rule === 'deposit') {
+                if(!depStatus.hasApproved) {
+                    if(depStatus.hasPending) {
+                        return {
+                            eligible: false,
+                            type: 'deposit_pending',
+                            title: 'Deposit Approval Pending!',
+                            message: 'Your deposit request has been submitted and is currently waiting for admin approval. Withdrawals can only be processed after your deposit is approved by the admin.',
+                            btnText: 'View Deposit Status',
+                            btnIcon: 'fa-clock',
+                            action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('history'); }
+                        };
+                    } else if(depStatus.hasRejected) {
+                        return {
+                            eligible: false,
+                            type: 'deposit_rejected',
+                            title: 'Deposit Not Approved!',
+                            message: 'Your previous deposit request was rejected by the admin. Please submit a valid deposit and wait for admin approval before requesting a withdrawal.',
+                            btnText: 'Make New Deposit',
+                            btnIcon: 'fa-plus-circle',
+                            action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
+                        };
+                    } else {
+                        return {
+                            eligible: false,
+                            type: 'deposit',
+                            title: 'Deposit Required!',
+                            message: 'A deposit is mandatory before withdrawing. You cannot request a withdrawal until you make a deposit and it is approved by the admin.',
+                            btnText: 'Add Money (Deposit)',
+                            btnIcon: 'fa-plus-circle',
+                            action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
+                        };
+                    }
+                }
+            } else if(rule === 'both') {
+                if(!hasPlan || !depStatus.hasApproved) {
+                    if(!hasPlan && !depStatus.hasApproved) {
+                        if(depStatus.hasPending) {
+                            return {
+                                eligible: false,
+                                type: 'both',
+                                title: 'Plan & Deposit Required!',
+                                message: 'Both an Investment Plan and an admin-approved deposit are required to withdraw. Your deposit is currently pending approval, and you also need to purchase an Investment Plan.',
+                                btnText: 'Buy Investment Plan',
+                                btnIcon: 'fa-gem',
+                                action: () => { closePlanRequiredModal(); showPage('plans'); }
+                            };
+                        } else {
+                            return {
+                                eligible: false,
+                                type: 'both',
+                                title: 'Plan & Deposit Required!',
+                                message: 'Both an Investment Plan purchase and an admin-approved deposit are mandatory before you can request a withdrawal. Please complete both requirements.',
+                                btnText: 'Add Money (Deposit)',
+                                btnIcon: 'fa-plus-circle',
+                                action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
+                            };
+                        }
+                    } else if(!hasPlan) {
+                        return {
+                            eligible: false,
+                            type: 'plan',
+                            title: 'Investment Plan Required!',
+                            message: 'Your deposit has been approved, but you must also purchase at least 1 Investment Plan before you can withdraw your funds.',
+                            btnText: 'Buy Investment Plan',
+                            btnIcon: 'fa-gem',
+                            action: () => { closePlanRequiredModal(); showPage('plans'); }
+                        };
+                    } else if(!depStatus.hasApproved) {
+                        if(depStatus.hasPending) {
+                            return {
+                                eligible: false,
+                                type: 'deposit_pending',
+                                title: 'Deposit Approval Pending!',
+                                message: 'You have purchased an Investment Plan, but your deposit request is still pending admin approval. Withdrawals will be enabled once your deposit is approved.',
+                                btnText: 'View Deposit Status',
+                                btnIcon: 'fa-clock',
+                                action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('history'); }
+                            };
+                        } else {
+                            return {
+                                eligible: false,
+                                type: 'deposit',
+                                title: 'Deposit Required!',
+                                message: 'You have purchased an Investment Plan, but an admin-approved deposit is also required to process withdrawals. Please make a deposit to continue.',
+                                btnText: 'Add Money (Deposit)',
+                                btnIcon: 'fa-plus-circle',
+                                action: () => { closePlanRequiredModal(); showPage('wallet'); showWalletTab('add'); }
+                            };
+                        }
+                    }
+                }
+            }
+
+            return { eligible: true };
+        }
+
+        async function updateWithdrawSectionNotice() {
+            // User requested: No inline banner in app, only popup in English
+            const noticeEl = document.getElementById('withdrawRuleNotice');
+            if(noticeEl) {
+                noticeEl.style.display = 'none';
+                noticeEl.innerHTML = '';
+            }
         }
 
         function showWithdrawRequirementModal(check) {
@@ -1755,10 +1980,14 @@
             document.querySelector(`.wallet-tab[data-tab="${tab}"]`).classList.add('active');
             document.querySelectorAll('.wallet-section').forEach(s=>s.classList.add('hidden'));
             document.getElementById('wallet'+tab.charAt(0).toUpperCase()+tab.slice(1)+'Section').classList.remove('hidden');
+            if(tab === 'withdraw') {
+                updateWithdrawSectionNotice();
+            }
         }
 
         function loadWalletData() {
             document.getElementById('walletBalance').textContent = currentUser.wallet?.mainBalance || 0;
+            updateWithdrawSectionNotice();
             const txns = Object.values(currentUser.transactions || {}).sort((a,b)=>new Date(b.date)-new Date(a.date));
             document.getElementById('walletTransactions').innerHTML = txns.length ? txns.map(tx => {
                 let status = tx.status || 'approved'; 
@@ -1800,7 +2029,11 @@
             const depId = generateId('DEP');
             await database.ref('deposits/'+depId).set({id: depId, userId: currentUser.id, userName: currentUser.name, userPhone: currentUser.phone, amount: amt, transactionId: utr, upiApp: via, status: 'pending', requestedAt: new Date().toISOString()});
             await database.ref(`users/${currentUser.id}/transactions/${depId}`).set({id: depId, type: 'deposit_pending', amount: amt, description: `Deposit (UTR: ${utr})`, date: new Date().toISOString(), status: 'pending'});
-            hideLoading(); showToast('Request Sent!', 'success'); document.getElementById('addMoneyForm').reset(); showWalletTab('history');
+            hideLoading(); 
+            showToast('Request Sent! Awaiting admin approval.', 'success'); 
+            document.getElementById('addMoneyForm').reset(); 
+            showWalletTab('history');
+            updateWithdrawSectionNotice();
         });
 
         function toggleWithdrawMethod() {
@@ -1811,7 +2044,9 @@
 
         document.getElementById('withdrawForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const check = checkWithdrawalEligibility();
+            showLoading('Checking eligibility...');
+            const check = await checkWithdrawalEligibilityAsync();
+            hideLoading();
             if(!check.eligible) {
                 showWithdrawRequirementModal(check);
                 return;
@@ -1824,9 +2059,30 @@
             showLoading('Processing...');
             await database.ref(`users/${currentUser.id}/wallet/mainBalance`).set((currentUser.wallet.mainBalance) - amt);
             const wId = generateId('WID');
-            await database.ref('withdrawals/'+wId).set({id: wId, userId: currentUser.id, userName: currentUser.name, amount: amt, method: m, details: details, status: 'pending', requestedAt: new Date().toISOString()});
-            await database.ref(`users/${currentUser.id}/transactions/${wId}`).set({id: wId, type: 'withdrawal_pending', amount: amt, description: `Withdrawal Requested`, date: new Date().toISOString(), status: 'pending'});
-            hideLoading(); showToast('Withdrawal Requested!', 'success'); document.getElementById('withdrawForm').reset(); showWalletTab('history');
+            await database.ref('withdrawals/'+wId).set({
+                id: wId, 
+                userId: currentUser.id, 
+                userName: currentUser.name, 
+                userPhone: currentUser.phone || '',
+                amount: amt, 
+                method: m, 
+                details: details, 
+                status: 'pending', 
+                requestedAt: new Date().toISOString()
+            });
+            await database.ref(`users/${currentUser.id}/transactions/${wId}`).set({
+                id: wId, 
+                type: 'withdrawal_pending', 
+                amount: amt, 
+                description: `Withdrawal Requested`, 
+                date: new Date().toISOString(), 
+                status: 'pending'
+            });
+            hideLoading(); 
+            showToast('Withdrawal Requested!', 'success'); 
+            document.getElementById('withdrawForm').reset(); 
+            showWalletTab('history');
+            updateWithdrawSectionNotice();
         });
 
         // ==================== REFERRAL & PROFILE ====================
