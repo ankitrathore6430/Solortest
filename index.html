@@ -772,79 +772,128 @@
             </div>
         </div>
 
-        <div class="section-title"><h2><i class="fas fa-sitemap" style="color: var(--primary); margin-right: 10px;"></i>Team Commission</h2></div>
+        <div class="section-title"><h2><i class="fas fa-sitemap" style="color: var(--primary); margin-right: 10px;"></i>3-Level Team Commission</h2></div>
         <div class="premium-card" style="padding: 15px;">
-            <div class="level-card">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="width: 45px; height: 45px; background: rgba(99, 102, 241, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; font-size: 18px;">L1</div>
+            <!-- Level 1 Card -->
+            <div class="level-card" id="cardLvl1" onclick="filterReferredLevel(1)" style="cursor: pointer; transition: all 0.2s; border: 1px solid #e2e8f0;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 46px; height: 46px; background: rgba(99, 102, 241, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; font-size: 17px; flex-shrink: 0;">L1</div>
                     <div>
-                        <div style="font-weight: 700; font-size: 15px;">Direct Refers</div>
-                        <div style="font-size: 12px; color: var(--gray);">Your direct friends</div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-weight: 700; font-size: 15px; color: var(--dark);">Direct Referrals</span>
+                            <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Level 1</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray); margin-top: 2px;">Your direct friends • 5% Commission + ₹<span class="refer-amount-display">15</span> Bonus</div>
+                        <div style="font-size: 12px; font-weight: 700; color: var(--primary); margin-top: 4px;" id="lvl1SummaryStats">0 Users • ₹0 Earned</div>
                     </div>
                 </div>
-                <div style="font-size: 22px; font-weight: 800; color: var(--primary);">5%</div>
+                <div style="text-align: right; flex-shrink: 0;">
+                    <div style="font-size: 22px; font-weight: 800; color: var(--primary);">5%</div>
+                    <div style="font-size: 10px; color: var(--gray); font-weight: 600;">COMM.</div>
+                </div>
             </div>
             
-            <div class="level-card">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="width: 45px; height: 45px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--success); font-weight: 800; font-size: 18px;">L2</div>
+            <!-- Level 2 Card -->
+            <div class="level-card" id="cardLvl2" onclick="filterReferredLevel(2)" style="cursor: pointer; transition: all 0.2s; border: 1px solid #e2e8f0;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 46px; height: 46px; background: rgba(168, 85, 247, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #7e22ce; font-weight: 800; font-size: 17px; flex-shrink: 0;">L2</div>
                     <div>
-                        <div style="font-weight: 700; font-size: 15px;">Indirect Refers</div>
-                        <div style="font-size: 12px; color: var(--gray);">Friends of Level 1</div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-weight: 700; font-size: 15px; color: var(--dark);">Indirect Referrals</span>
+                            <span style="background: rgba(168, 85, 247, 0.1); color: #7e22ce; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Level 2</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray); margin-top: 2px;">Friends of Level 1 • 3% Commission</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #7e22ce; margin-top: 4px;" id="lvl2SummaryStats">0 Users • ₹0 Earned</div>
                     </div>
                 </div>
-                <div style="font-size: 22px; font-weight: 800; color: var(--success);">3%</div>
+                <div style="text-align: right; flex-shrink: 0;">
+                    <div style="font-size: 22px; font-weight: 800; color: #7e22ce;">3%</div>
+                    <div style="font-size: 10px; color: var(--gray); font-weight: 600;">COMM.</div>
+                </div>
             </div>
 
-            <div class="level-card" style="margin-bottom: 0;">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="width: 45px; height: 45px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--warning); font-weight: 800; font-size: 18px;">L3</div>
+            <!-- Level 3 Card -->
+            <div class="level-card" id="cardLvl3" onclick="filterReferredLevel(3)" style="cursor: pointer; transition: all 0.2s; border: 1px solid #e2e8f0; margin-bottom: 0;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 46px; height: 46px; background: rgba(245, 158, 11, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #b45309; font-weight: 800; font-size: 17px; flex-shrink: 0;">L3</div>
                     <div>
-                        <div style="font-weight: 700; font-size: 15px;">Deep Refers</div>
-                        <div style="font-size: 12px; color: var(--gray);">Friends of Level 2</div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-weight: 700; font-size: 15px; color: var(--dark);">Deep Referrals</span>
+                            <span style="background: rgba(245, 158, 11, 0.1); color: #b45309; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Level 3</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray); margin-top: 2px;">Friends of Level 2 • 1% Commission</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #b45309; margin-top: 4px;" id="lvl3SummaryStats">0 Users • ₹0 Earned</div>
                     </div>
                 </div>
-                <div style="font-size: 22px; font-weight: 800; color: var(--warning);">1%</div>
+                <div style="text-align: right; flex-shrink: 0;">
+                    <div style="font-size: 22px; font-weight: 800; color: #b45309;">1%</div>
+                    <div style="font-size: 10px; color: var(--gray); font-weight: 600;">COMM.</div>
+                </div>
             </div>
         </div>
 
-        <div class="section-title"><h2><i class="fas fa-chart-line" style="color: var(--success); margin-right: 10px;"></i>Your Earnings</h2></div>
+        <div class="section-title"><h2><i class="fas fa-chart-line" style="color: var(--success); margin-right: 10px;"></i>Team Income Summary</h2></div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 0 20px 20px;">
-            <div class="premium-card" style="margin: 0; padding: 25px; text-align: center;">
-                <div style="font-size: 28px; font-weight: 700; color: var(--dark);" id="refTotal">0</div>
-                <div style="font-size: 12px; color: var(--gray);">Total Team</div>
+            <div class="premium-card" style="margin: 0; padding: 22px 16px; text-align: center;">
+                <div style="font-size: 28px; font-weight: 800; color: var(--dark);" id="refTotal">0</div>
+                <div style="font-size: 12px; color: var(--gray); font-weight: 600; margin-top: 4px;">Total Team (L1+L2+L3)</div>
             </div>
-            <div class="premium-card" style="margin: 0; padding: 25px; text-align: center;">
-                <div style="font-size: 28px; font-weight: 700; color: var(--success);" id="refEarned">₹0</div>
-                <div style="font-size: 12px; color: var(--gray);">Referral Income</div>
+            <div class="premium-card" style="margin: 0; padding: 22px 16px; text-align: center;">
+                <div style="font-size: 28px; font-weight: 800; color: var(--success);" id="refEarned">₹0</div>
+                <div style="font-size: 12px; color: var(--gray); font-weight: 600; margin-top: 4px;">Total Team Income</div>
             </div>
         </div>
 
-        <!-- REFERRED USERS SECTION -->
+        <!-- REFERRED USERS & PER-USER EARNINGS SECTION -->
         <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
-            <h2><i class="fas fa-user-friends" style="color: var(--primary); margin-right: 10px;"></i>Joined Users</h2>
+            <h2><i class="fas fa-user-friends" style="color: var(--primary); margin-right: 10px;"></i>Team Members & Earnings</h2>
             <span id="refTeamCountBadge" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(99, 102, 241, 0.2);">0 Users</span>
         </div>
 
         <div class="premium-card" style="padding: 16px; margin-bottom: 25px;">
-            <!-- Filter Tabs -->
-            <div style="display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; overflow-x: auto;">
-                <button class="ref-filter-btn" id="refFilterAll" onclick="filterReferredUsers('all')" style="border: none; background: var(--primary); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
-                    All (<span id="refFilterAllCount">0</span>)
-                </button>
-                <button class="ref-filter-btn" id="refFilterActive" onclick="filterReferredUsers('active')" style="border: none; background: #f1f5f9; color: var(--gray); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
-                    Active (<span id="refFilterActiveCount">0</span>)
-                </button>
-                <button class="ref-filter-btn" id="refFilterBlocked" onclick="filterReferredUsers('blocked')" style="border: none; background: #f1f5f9; color: var(--gray); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
-                    Blocked (<span id="refFilterBlockedCount">0</span>)
-                </button>
+            <!-- Level Filter Tabs -->
+            <div style="margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px;">Filter by Level</span>
+                    <span id="activeLevelInfoText" style="font-size: 11px; color: var(--primary); font-weight: 600;">Showing All Levels</span>
+                </div>
+                <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;">
+                    <button class="ref-level-btn" id="refLvlAll" onclick="filterReferredLevel('all')" style="border: none; background: var(--primary); color: white; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+                        All Levels (<span id="refLvlAllCount">0</span>)
+                    </button>
+                    <button class="ref-level-btn" id="refLvl1" onclick="filterReferredLevel(1)" style="border: none; background: #f1f5f9; color: var(--gray); padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+                        Level 1 (<span id="refLvl1Count">0</span>)
+                    </button>
+                    <button class="ref-level-btn" id="refLvl2" onclick="filterReferredLevel(2)" style="border: none; background: #f1f5f9; color: var(--gray); padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+                        Level 2 (<span id="refLvl2Count">0</span>)
+                    </button>
+                    <button class="ref-level-btn" id="refLvl3" onclick="filterReferredLevel(3)" style="border: none; background: #f1f5f9; color: var(--gray); padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+                        Level 3 (<span id="refLvl3Count">0</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Filter Tabs -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-bottom: 14px;">
+                <div style="font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px;">Status</div>
+                <div style="display: flex; gap: 6px;">
+                    <button class="ref-status-btn" id="refFilterAll" onclick="filterReferredStatus('all')" style="border: none; background: var(--dark); color: white; padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                        All (<span id="refFilterAllCount">0</span>)
+                    </button>
+                    <button class="ref-status-btn" id="refFilterActive" onclick="filterReferredStatus('active')" style="border: none; background: #f1f5f9; color: var(--gray); padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                        Active (<span id="refFilterActiveCount">0</span>)
+                    </button>
+                    <button class="ref-status-btn" id="refFilterBlocked" onclick="filterReferredStatus('blocked')" style="border: none; background: #f1f5f9; color: var(--gray); padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                        Blocked (<span id="refFilterBlockedCount">0</span>)
+                    </button>
+                </div>
             </div>
 
             <!-- List Container -->
             <div id="referredUsersListContainer">
                 <div style="text-align: center; padding: 30px 10px; color: var(--gray);">
                     <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i>
-                    <p style="font-size: 13px;">Loading joined users...</p>
+                    <p style="font-size: 13px;">Loading team members & earnings...</p>
                 </div>
             </div>
         </div>
@@ -1491,8 +1540,15 @@
                             'referrals/earnings': (rData.referrals?.earnings||0)+REFER_AMOUNT 
                         });
                         await database.ref(`users/${rId}/transactions`).push({
-                            id: generateId('TXN'), type: 'referral_bonus', amount: REFER_AMOUNT, 
-                            description: `Referral Signup Bonus from ${name}`, date: new Date().toISOString(), status: 'approved'
+                            id: generateId('TXN'), 
+                            type: 'referral_bonus', 
+                            amount: REFER_AMOUNT, 
+                            level: 1,
+                            sourceUserId: newUser.id,
+                            sourceUserName: name,
+                            description: `Referral Signup Bonus from ${name}`, 
+                            date: new Date().toISOString(), 
+                            status: 'approved'
                         });
                     }
                 }
@@ -1762,7 +1818,17 @@
                 const rId = Object.keys(rSnap.val())[0], rData = rSnap.val()[rId], comm = Math.floor(amount * levels[i] / 100);
                 if(comm > 0) {
                     await database.ref(`users/${rId}`).update({ 'wallet/mainBalance': (rData.wallet?.mainBalance||0) + comm, 'referrals/earnings': (rData.referrals?.earnings||0) + comm });
-                    await database.ref(`users/${rId}/transactions`).push({ id: generateId('TXN'), type: 'commission', amount: comm, description: `Level ${i+1} Comm. (${levels[i]}%) from ${currentUser.name}`, date: new Date().toISOString(), status: 'approved' });
+                    await database.ref(`users/${rId}/transactions`).push({ 
+                        id: generateId('TXN'), 
+                        type: 'commission', 
+                        amount: comm, 
+                        level: i + 1,
+                        sourceUserId: currentUser.id,
+                        sourceUserName: currentUser.name,
+                        description: `Level ${i+1} Comm. (${levels[i]}%) from ${currentUser.name}`, 
+                        date: new Date().toISOString(), 
+                        status: 'approved' 
+                    });
                 }
                 currentCode = rData.referredBy; 
             }
@@ -2355,16 +2421,21 @@
             updateWithdrawSectionNotice();
         });
 
-        // ==================== REFERRAL & PROFILE ====================
+        // ==================== 3-LEVEL REFERRAL & PROFILE ====================
         let referredUsersListener = null;
         let currentReferredUsers = [];
-        let currentRefFilter = 'all';
+        let currentRefLevelFilter = 'all'; // 'all', 1, 2, 3
+        let currentRefStatusFilter = 'all'; // 'all', 'active', 'blocked'
+        let teamLevelStats = {
+            lvl1Count: 0, lvl1Earned: 0,
+            lvl2Count: 0, lvl2Earned: 0,
+            lvl3Count: 0, lvl3Earned: 0,
+            totalCount: 0, totalEarned: 0
+        };
 
         function loadReferralData() {
             if(!currentUser) return;
             document.getElementById('refLink').textContent = `${window.location.origin}${window.location.pathname}?ref=${currentUser.referralCode}`;
-            document.getElementById('refTotal').textContent = currentUser.referrals?.count || 0;
-            document.getElementById('refEarned').textContent = '₹'+(currentUser.referrals?.earnings || 0);
             loadReferredUsersList();
         }
 
@@ -2379,87 +2450,13 @@
             }
 
             container.innerHTML = `
-                <div style="text-align: center; padding: 25px 10px; color: var(--gray);">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 22px; color: var(--primary); margin-bottom: 8px;"></i>
-                    <p style="font-size: 13px;">Loading joined users...</p>
+                <div style="text-align: center; padding: 30px 10px; color: var(--gray);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i>
+                    <p style="font-size: 13px;">Loading team members & earnings...</p>
                 </div>
             `;
 
-            const myRefCode = (currentUser.referralCode || '').trim();
-
-            const processSnapshots = (usersSnap, membersSnap) => {
-                const map = new Map();
-
-                if(usersSnap && usersSnap.exists() && usersSnap.val()) {
-                    const uData = usersSnap.val();
-                    Object.keys(uData).forEach(uid => {
-                        const u = uData[uid];
-                        if(u && u.id !== currentUser.id) {
-                            map.set(u.id || uid, {
-                                id: u.id || uid,
-                                name: u.name || 'User',
-                                phone: u.phone || '',
-                                joinDate: u.joinDate || '',
-                                status: u.status || 'active',
-                                activePlans: u.activePlans || {}
-                            });
-                        }
-                    });
-                }
-
-                if(membersSnap && membersSnap.exists() && membersSnap.val()) {
-                    const mData = membersSnap.val();
-                    Object.keys(mData).forEach(mid => {
-                        const m = mData[mid];
-                        if(m) {
-                            const existing = map.get(m.id || mid);
-                            if(existing) {
-                                if(!existing.joinDate && m.joinDate) existing.joinDate = m.joinDate;
-                            } else {
-                                map.set(m.id || mid, {
-                                    id: m.id || mid,
-                                    name: m.name || 'User',
-                                    phone: m.phone || '',
-                                    joinDate: m.joinDate || '',
-                                    status: m.status || 'active',
-                                    activePlans: m.activePlans || {}
-                                });
-                            }
-                        }
-                    });
-                }
-
-                currentReferredUsers = Array.from(map.values());
-
-                currentReferredUsers.sort((a, b) => {
-                    const dateA = a.joinDate ? new Date(a.joinDate).getTime() : 0;
-                    const dateB = b.joinDate ? new Date(b.joinDate).getTime() : 0;
-                    return dateB - dateA;
-                });
-
-                const totalCount = currentReferredUsers.length;
-                const activeCount = currentReferredUsers.filter(u => u.status !== 'blocked').length;
-                const blockedCount = currentReferredUsers.filter(u => u.status === 'blocked').length;
-
-                const countBadge = document.getElementById('refTeamCountBadge');
-                if(countBadge) countBadge.textContent = `${totalCount} User${totalCount === 1 ? '' : 's'}`;
-
-                const allCountEl = document.getElementById('refFilterAllCount');
-                if(allCountEl) allCountEl.textContent = totalCount;
-                const activeCountEl = document.getElementById('refFilterActiveCount');
-                if(activeCountEl) activeCountEl.textContent = activeCount;
-                const blockedCountEl = document.getElementById('refFilterBlockedCount');
-                if(blockedCountEl) blockedCountEl.textContent = blockedCount;
-
-                const refTotalEl = document.getElementById('refTotal');
-                if(refTotalEl && totalCount > (currentUser.referrals?.count || 0)) {
-                    refTotalEl.textContent = totalCount;
-                }
-
-                renderReferredUsersList();
-            };
-
-            referredUsersListener = database.ref('users').orderByChild('referredBy').equalTo(myRefCode);
+            referredUsersListener = database.ref('users');
             referredUsersListener.on('value', async (usersSnap) => {
                 let membersSnap = null;
                 try {
@@ -2467,29 +2464,339 @@
                 } catch(e) {
                     console.log('Error fetching members subnode:', e);
                 }
-                processSnapshots(usersSnap, membersSnap);
+                const allUsersObj = (usersSnap && usersSnap.exists()) ? usersSnap.val() : {};
+                const directMembersObj = (membersSnap && membersSnap.exists()) ? membersSnap.val() : {};
+                processTeamHierarchy(allUsersObj, directMembersObj);
             }, (error) => {
-                console.error('Error listening to referred users:', error);
+                console.error('Error listening to team users:', error);
                 database.ref(`users/${currentUser.id}/referrals/members`).once('value').then(membersSnap => {
-                    processSnapshots(null, membersSnap);
+                    processTeamHierarchy({}, (membersSnap && membersSnap.exists()) ? membersSnap.val() : {});
                 }).catch(err => {
                     container.innerHTML = `
-                        <div style="text-align: center; padding: 20px; color: var(--danger);">
-                            <i class="fas fa-exclamation-triangle" style="font-size: 20px; margin-bottom: 5px;"></i>
-                            <p style="font-size: 13px;">Unable to load joined users</p>
+                        <div style="text-align: center; padding: 25px 10px; color: var(--danger);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 22px; margin-bottom: 8px;"></i>
+                            <p style="font-size: 13px;">Unable to load team members</p>
                         </div>
                     `;
                 });
             });
         }
 
-        function filterReferredUsers(filter) {
-            currentRefFilter = filter;
-            ['all', 'active', 'blocked'].forEach(f => {
-                const btn = document.getElementById('refFilter' + f.charAt(0).toUpperCase() + f.slice(1));
+        function processTeamHierarchy(allUsersObj, directMembersObj) {
+            if(!currentUser) return;
+            const myId = currentUser.id;
+            const myCode = (currentUser.referralCode || '').trim().toUpperCase();
+
+            // Index all users by ID and referralCode
+            const userById = new Map();
+            const userByCode = new Map();
+
+            if(allUsersObj) {
+                Object.keys(allUsersObj).forEach(uid => {
+                    const u = allUsersObj[uid];
+                    if(u) {
+                        const id = u.id || uid;
+                        const userObj = { ...u, id: id };
+                        userById.set(id, userObj);
+                        if(u.referralCode) {
+                            userByCode.set(String(u.referralCode).trim().toUpperCase(), userObj);
+                        }
+                    }
+                });
+            }
+
+            // LEVEL 1: Direct referrals
+            const level1List = [];
+            const level1Codes = new Set();
+            const level1Ids = new Set();
+
+            userById.forEach((u, id) => {
+                if(id === myId) return;
+                const refBy = (u.referredBy || '').trim().toUpperCase();
+                const isDirectByCode = (myCode && refBy === myCode);
+                const isDirectByMember = (directMembersObj && directMembersObj[id]);
+
+                if(isDirectByCode || isDirectByMember) {
+                    level1List.push(u);
+                    level1Ids.add(id);
+                    if(u.referralCode) {
+                        level1Codes.add(String(u.referralCode).trim().toUpperCase());
+                    }
+                }
+            });
+
+            // If direct members are in subnode but not in top users map
+            if(directMembersObj) {
+                Object.keys(directMembersObj).forEach(mid => {
+                    if(mid !== myId && !level1Ids.has(mid)) {
+                        const m = directMembersObj[mid];
+                        if(m) {
+                            const mUser = {
+                                id: m.id || mid,
+                                name: m.name || 'User',
+                                phone: m.phone || '',
+                                joinDate: m.joinDate || '',
+                                status: m.status || 'active',
+                                activePlans: m.activePlans || {},
+                                referralCode: m.referralCode || ''
+                            };
+                            level1List.push(mUser);
+                            level1Ids.add(mid);
+                            if(m.referralCode) {
+                                level1Codes.add(String(m.referralCode).trim().toUpperCase());
+                            }
+                        }
+                    }
+                });
+            }
+
+            // LEVEL 2: Indirect referrals (referredBy is in level1Codes)
+            const level2List = [];
+            const level2Codes = new Set();
+            const level2Ids = new Set();
+
+            userById.forEach((u, id) => {
+                if(id === myId || level1Ids.has(id)) return;
+                const refBy = (u.referredBy || '').trim().toUpperCase();
+                if(refBy && level1Codes.has(refBy)) {
+                    level2List.push(u);
+                    level2Ids.add(id);
+                    if(u.referralCode) {
+                        level2Codes.add(String(u.referralCode).trim().toUpperCase());
+                    }
+                }
+            });
+
+            // LEVEL 3: Deep referrals (referredBy is in level2Codes)
+            const level3List = [];
+            const level3Ids = new Set();
+
+            userById.forEach((u, id) => {
+                if(id === myId || level1Ids.has(id) || level2Ids.has(id)) return;
+                const refBy = (u.referredBy || '').trim().toUpperCase();
+                if(refBy && level2Codes.has(refBy)) {
+                    level3List.push(u);
+                    level3Ids.add(id);
+                }
+            });
+
+            // Calculate earnings per user
+            const myTxns = Object.values(currentUser.transactions || {});
+
+            function calculateUserEarnings(u, level, commRate, inviterName) {
+                const uId = u.id;
+                const uName = (u.name || '').trim().toLowerCase();
+                const uPhone = (u.phone || '').replace(/\D/g, '');
+                const uLastPhone = uPhone.length >= 6 ? uPhone.slice(-6) : '';
+
+                // Matching transactions
+                const matchingTxns = myTxns.filter(t => {
+                    if(!t) return false;
+                    if(t.sourceUserId && t.sourceUserId === uId) return true;
+                    if(t.description) {
+                        const desc = t.description.toLowerCase();
+                        if(uName && desc.includes(uName)) return true;
+                        if(uLastPhone && desc.includes(uLastPhone)) return true;
+                    }
+                    return false;
+                });
+
+                let txnBonus = 0;
+                let txnComm = 0;
+
+                matchingTxns.forEach(t => {
+                    const amt = Number(t.amount) || 0;
+                    const desc = (t.description || '').toLowerCase();
+                    const type = t.type || '';
+                    if(type === 'referral_bonus' || type === 'referral' || desc.includes('signup') || desc.includes('bonus')) {
+                        txnBonus += amt;
+                    } else if(type === 'commission' || desc.includes('comm')) {
+                        txnComm += amt;
+                    } else {
+                        txnComm += amt;
+                    }
+                });
+
+                // Calculate plan investments
+                let totalPlansInvested = 0;
+                if(u.activePlans) {
+                    Object.values(u.activePlans).forEach(p => {
+                        if(p && p.amount && p.status !== 'cancelled' && p.status !== 'rejected') {
+                            totalPlansInvested += Number(p.amount) || 0;
+                        }
+                    });
+                }
+
+                const expectedComm = Math.floor(totalPlansInvested * commRate / 100);
+                const finalComm = Math.max(txnComm, expectedComm);
+
+                // Level 1: Guaranteed Signup Bonus
+                const guaranteedBonus = (level === 1) ? (REFER_AMOUNT || 15) : 0;
+                const finalBonus = Math.max(txnBonus, guaranteedBonus);
+
+                const totalEarned = (level === 1 ? finalBonus : 0) + finalComm;
+
+                // Breakdown text
+                let breakdownText = '';
+                if(totalEarned > 0) {
+                    const parts = [];
+                    if(level === 1 && finalBonus > 0) parts.push(`₹${finalBonus} Signup Bonus`);
+                    if(finalComm > 0) parts.push(`₹${finalComm} (${commRate}% Plan Comm.)`);
+                    breakdownText = parts.join(' + ');
+                } else {
+                    breakdownText = `Waiting for investment (Earn ${commRate}% Comm.)`;
+                }
+
+                return {
+                    ...u,
+                    level: level,
+                    commRate: commRate,
+                    inviterName: inviterName,
+                    totalInvested: totalPlansInvested,
+                    signupBonus: finalBonus,
+                    commissionEarned: finalComm,
+                    earnedFromUser: totalEarned,
+                    breakdownText: breakdownText
+                };
+            }
+
+            const processedL1 = level1List.map(u => calculateUserEarnings(u, 1, 5, 'You'));
+            const processedL2 = level2List.map(u => {
+                const parent = userByCode.get((u.referredBy || '').trim().toUpperCase());
+                return calculateUserEarnings(u, 2, 3, parent ? parent.name : 'Level 1 Friend');
+            });
+            const processedL3 = level3List.map(u => {
+                const parent = userByCode.get((u.referredBy || '').trim().toUpperCase());
+                return calculateUserEarnings(u, 3, 1, parent ? parent.name : 'Level 2 Friend');
+            });
+
+            // Calculate aggregations
+            const l1Earned = processedL1.reduce((sum, u) => sum + (u.earnedFromUser || 0), 0);
+            const l2Earned = processedL2.reduce((sum, u) => sum + (u.earnedFromUser || 0), 0);
+            const l3Earned = processedL3.reduce((sum, u) => sum + (u.earnedFromUser || 0), 0);
+
+            teamLevelStats = {
+                lvl1Count: processedL1.length,
+                lvl1Earned: l1Earned,
+                lvl2Count: processedL2.length,
+                lvl2Earned: l2Earned,
+                lvl3Count: processedL3.length,
+                lvl3Earned: l3Earned,
+                totalCount: processedL1.length + processedL2.length + processedL3.length,
+                totalEarned: l1Earned + l2Earned + l3Earned
+            };
+
+            currentReferredUsers = [...processedL1, ...processedL2, ...processedL3];
+            currentReferredUsers.sort((a, b) => {
+                const dateA = a.joinDate ? new Date(a.joinDate).getTime() : 0;
+                const dateB = b.joinDate ? new Date(b.joinDate).getTime() : 0;
+                return dateB - dateA;
+            });
+
+            updateTeamUIStats();
+            renderReferredUsersList();
+        }
+
+        function updateTeamUIStats() {
+            // Level 1, 2, 3 card stats
+            const l1StatEl = document.getElementById('lvl1SummaryStats');
+            if(l1StatEl) l1StatEl.textContent = `${teamLevelStats.lvl1Count} Users • ₹${teamLevelStats.lvl1Earned} Earned`;
+
+            const l2StatEl = document.getElementById('lvl2SummaryStats');
+            if(l2StatEl) l2StatEl.textContent = `${teamLevelStats.lvl2Count} Users • ₹${teamLevelStats.lvl2Earned} Earned`;
+
+            const l3StatEl = document.getElementById('lvl3SummaryStats');
+            if(l3StatEl) l3StatEl.textContent = `${teamLevelStats.lvl3Count} Users • ₹${teamLevelStats.lvl3Earned} Earned`;
+
+            // Total team & earnings
+            const refTotalEl = document.getElementById('refTotal');
+            if(refTotalEl) refTotalEl.textContent = teamLevelStats.totalCount;
+
+            const refEarnedEl = document.getElementById('refEarned');
+            const displayEarned = Math.max(teamLevelStats.totalEarned, currentUser?.referrals?.earnings || 0);
+            if(refEarnedEl) refEarnedEl.textContent = '₹' + displayEarned;
+
+            // Badges & filter button counts
+            const teamBadge = document.getElementById('refTeamCountBadge');
+            if(teamBadge) teamBadge.textContent = `${teamLevelStats.totalCount} Users • ₹${displayEarned}`;
+
+            const lvlAllCount = document.getElementById('refLvlAllCount');
+            if(lvlAllCount) lvlAllCount.textContent = teamLevelStats.totalCount;
+
+            const lvl1Count = document.getElementById('refLvl1Count');
+            if(lvl1Count) lvl1Count.textContent = teamLevelStats.lvl1Count;
+
+            const lvl2Count = document.getElementById('refLvl2Count');
+            if(lvl2Count) lvl2Count.textContent = teamLevelStats.lvl2Count;
+
+            const lvl3Count = document.getElementById('refLvl3Count');
+            if(lvl3Count) lvl3Count.textContent = teamLevelStats.lvl3Count;
+        }
+
+        function filterReferredLevel(level) {
+            currentRefLevelFilter = level;
+
+            // Update level tab buttons
+            const levelTabs = [
+                { id: 'refLvlAll', lvl: 'all' },
+                { id: 'refLvl1', lvl: 1 },
+                { id: 'refLvl2', lvl: 2 },
+                { id: 'refLvl3', lvl: 3 }
+            ];
+
+            levelTabs.forEach(item => {
+                const btn = document.getElementById(item.id);
                 if(btn) {
-                    if(f === filter) {
+                    if(item.lvl === level) {
                         btn.style.background = 'var(--primary)';
+                        btn.style.color = 'white';
+                    } else {
+                        btn.style.background = '#f1f5f9';
+                        btn.style.color = 'var(--gray)';
+                    }
+                }
+            });
+
+            // Highlight corresponding level card in Team Commission section
+            const cards = [
+                { id: 'cardLvl1', lvl: 1, borderColor: '#6366f1', bg: 'rgba(99, 102, 241, 0.05)' },
+                { id: 'cardLvl2', lvl: 2, borderColor: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.05)' },
+                { id: 'cardLvl3', lvl: 3, borderColor: '#f59e0b', bg: 'rgba(245, 158, 11, 0.05)' }
+            ];
+
+            cards.forEach(c => {
+                const cardEl = document.getElementById(c.id);
+                if(cardEl) {
+                    if(level === c.lvl) {
+                        cardEl.style.borderColor = c.borderColor;
+                        cardEl.style.background = c.bg;
+                        cardEl.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06)';
+                    } else {
+                        cardEl.style.borderColor = '#e2e8f0';
+                        cardEl.style.background = 'var(--light)';
+                        cardEl.style.boxShadow = 'none';
+                    }
+                }
+            });
+
+            const activeInfo = document.getElementById('activeLevelInfoText');
+            if(activeInfo) {
+                if(level === 'all') activeInfo.textContent = 'Showing All Levels (L1 + L2 + L3)';
+                else if(level === 1) activeInfo.textContent = 'Showing Level 1 (Direct Friends • 5% Comm)';
+                else if(level === 2) activeInfo.textContent = 'Showing Level 2 (Indirect Team • 3% Comm)';
+                else if(level === 3) activeInfo.textContent = 'Showing Level 3 (Deep Team • 1% Comm)';
+            }
+
+            renderReferredUsersList();
+        }
+
+        function filterReferredStatus(status) {
+            currentRefStatusFilter = status;
+            ['all', 'active', 'blocked'].forEach(s => {
+                const btn = document.getElementById('refFilter' + s.charAt(0).toUpperCase() + s.slice(1));
+                if(btn) {
+                    if(s === status) {
+                        btn.style.background = 'var(--dark)';
                         btn.style.color = 'white';
                     } else {
                         btn.style.background = '#f1f5f9';
@@ -2500,15 +2807,39 @@
             renderReferredUsersList();
         }
 
+        // Backward-compatible alias
+        function filterReferredUsers(status) {
+            filterReferredStatus(status);
+        }
+
         function renderReferredUsersList() {
             const container = document.getElementById('referredUsersListContainer');
             if(!container) return;
 
-            let filtered = currentReferredUsers;
-            if(currentRefFilter === 'active') {
-                filtered = currentReferredUsers.filter(u => u.status !== 'blocked');
-            } else if(currentRefFilter === 'blocked') {
-                filtered = currentReferredUsers.filter(u => u.status === 'blocked');
+            // Filter by level
+            let filteredByLevel = currentReferredUsers;
+            if(currentRefLevelFilter !== 'all') {
+                filteredByLevel = currentReferredUsers.filter(u => u.level === currentRefLevelFilter);
+            }
+
+            // Update status counts based on current level filter
+            const allCount = filteredByLevel.length;
+            const activeCount = filteredByLevel.filter(u => u.status !== 'blocked').length;
+            const blockedCount = filteredByLevel.filter(u => u.status === 'blocked').length;
+
+            const allCountEl = document.getElementById('refFilterAllCount');
+            if(allCountEl) allCountEl.textContent = allCount;
+            const activeCountEl = document.getElementById('refFilterActiveCount');
+            if(activeCountEl) activeCountEl.textContent = activeCount;
+            const blockedCountEl = document.getElementById('refFilterBlockedCount');
+            if(blockedCountEl) blockedCountEl.textContent = blockedCount;
+
+            // Filter by status
+            let filtered = filteredByLevel;
+            if(currentRefStatusFilter === 'active') {
+                filtered = filteredByLevel.filter(u => u.status !== 'blocked');
+            } else if(currentRefStatusFilter === 'blocked') {
+                filtered = filteredByLevel.filter(u => u.status === 'blocked');
             }
 
             if(filtered.length === 0) {
@@ -2518,20 +2849,24 @@
                             <div style="width: 55px; height: 55px; background: rgba(99, 102, 241, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: var(--primary); font-size: 24px;">
                                 <i class="fas fa-user-plus"></i>
                             </div>
-                            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 5px; color: var(--dark);">No Referrals Yet</h4>
-                            <p style="font-size: 12px; color: var(--gray); margin-bottom: 16px; max-width: 280px; margin-left: auto; margin-right: auto; line-height: 1.5;">
-                                Invite your friends using your referral link above and earn ₹${REFER_AMOUNT} instantly for every user who registers!
+                            <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--dark);">No Team Members Yet</h4>
+                            <p style="font-size: 13px; color: var(--gray); margin-bottom: 18px; max-width: 300px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+                                Invite your friends using your referral link above and earn ₹${REFER_AMOUNT} signup bonus + up to 5%-3%-1% team commission!
                             </p>
-                            <button class="btn-main" onclick="shareWhatsApp()" style="background: #25D366; color: white; border: none; padding: 9px 18px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; justify-content: center; width: auto; margin: 0 auto;">
-                                <i class="fab fa-whatsapp"></i> Invite on WhatsApp
+                            <button class="btn-main" onclick="shareWhatsApp()" style="background: #25D366; color: white; border: none; padding: 10px 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; justify-content: center; width: auto; margin: 0 auto; border-radius: 25px;">
+                                <i class="fab fa-whatsapp" style="font-size: 16px;"></i> Invite on WhatsApp
                             </button>
                         </div>
                     `;
                 } else {
+                    const lvlLabel = currentRefLevelFilter === 'all' ? '' : `in Level ${currentRefLevelFilter} `;
                     container.innerHTML = `
-                        <div style="text-align: center; padding: 25px 15px; color: var(--gray);">
-                            <i class="fas fa-filter" style="font-size: 24px; opacity: 0.4; margin-bottom: 8px;"></i>
-                            <p style="font-size: 13px;">No ${currentRefFilter} users found in your team.</p>
+                        <div style="text-align: center; padding: 30px 15px; color: var(--gray);">
+                            <i class="fas fa-filter" style="font-size: 26px; opacity: 0.4; margin-bottom: 8px;"></i>
+                            <p style="font-size: 13px; font-weight: 600;">No ${currentRefStatusFilter} users found ${lvlLabel}</p>
+                            <button onclick="filterReferredStatus('all'); filterReferredLevel('all');" style="margin-top: 10px; background: none; border: 1px solid #cbd5e1; color: var(--primary); padding: 5px 14px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                Reset Filters
+                            </button>
                         </div>
                     `;
                 }
@@ -2541,43 +2876,101 @@
             let html = '';
             filtered.forEach(u => {
                 const isBlocked = (u.status === 'blocked');
-                const hasPlans = u.activePlans && Object.keys(u.activePlans).length > 0;
+                const hasPlans = (u.totalInvested && u.totalInvested > 0);
                 const formattedDate = formatJoinDate(u.joinDate);
                 const maskedPhone = maskUserPhone(u.phone);
                 const initials = getUserInitials(u.name);
 
+                // Level badge styling
+                let levelPill = '';
+                let avatarGradient = '';
+                if(u.level === 1) {
+                    levelPill = `<span style="background: rgba(99, 102, 241, 0.12); color: #4338ca; border: 1px solid rgba(99, 102, 241, 0.25); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 8px;">Level 1</span>`;
+                    avatarGradient = isBlocked ? 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)' : 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)';
+                } else if(u.level === 2) {
+                    levelPill = `<span style="background: rgba(168, 85, 247, 0.12); color: #7e22ce; border: 1px solid rgba(168, 85, 247, 0.25); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 8px;">Level 2</span>`;
+                    avatarGradient = isBlocked ? 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)' : 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)';
+                } else {
+                    levelPill = `<span style="background: rgba(245, 158, 11, 0.12); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.25); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 8px;">Level 3</span>`;
+                    avatarGradient = isBlocked ? 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)' : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
+                }
+
                 html += `
-                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 10px; transition: all 0.2s;">
-                        <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
-                            <div style="width: 42px; height: 42px; border-radius: 50%; background: ${isBlocked ? 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)' : 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)'}; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
-                                ${escapeHtml(initials)}
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <!-- User Header Row -->
+                        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                                <div style="width: 44px; height: 44px; border-radius: 50%; background: ${avatarGradient}; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.12);">
+                                    ${escapeHtml(initials)}
+                                </div>
+                                <div style="min-width: 0;">
+                                    <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                        <span style="font-weight: 700; font-size: 15px; color: var(--dark);">${escapeHtml(u.name || 'User')}</span>
+                                        ${levelPill}
+                                        ${hasPlans ? `<span title="Investor with Active Plans" style="background: rgba(16, 185, 129, 0.12); color: #047857; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px;"><i class="fas fa-bolt" style="font-size: 9px;"></i> Investor (₹${u.totalInvested})</span>` : ''}
+                                    </div>
+                                    <div style="font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 4px;">
+                                        ${u.level === 1 ? `
+                                            <span style="color: var(--primary); font-weight: 600;"><i class="fas fa-link"></i> Directly invited by You</span>
+                                        ` : `
+                                            <span style="color: #64748b; font-weight: 500;"><i class="fas fa-level-down-alt"></i> Invited by <b style="color: var(--dark);">${escapeHtml(u.inviterName)}</b></span>
+                                        `}
+                                    </div>
+                                </div>
                             </div>
-                            <div style="min-width: 0;">
-                                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                    <span style="font-weight: 700; font-size: 14px; color: var(--dark);">${escapeHtml(u.name || 'User')}</span>
-                                    ${hasPlans ? `<span title="Active Plan Investor" style="background: rgba(245, 158, 11, 0.12); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.25); font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px;"><i class="fas fa-bolt" style="font-size: 9px;"></i> Investor</span>` : ''}
-                                </div>
-                                <div style="font-size: 12px; color: var(--gray); margin-top: 2px; display: flex; align-items: center; gap: 4px;">
-                                    <i class="fas fa-phone-alt" style="font-size: 10px; opacity: 0.6;"></i>
-                                    <span>${escapeHtml(maskedPhone)}</span>
-                                </div>
-                                <div style="font-size: 11px; color: #94a3b8; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
-                                    <i class="far fa-calendar-alt" style="font-size: 10px;"></i>
-                                    <span>${escapeHtml(formattedDate)}</span>
-                                </div>
+                            <div style="flex-shrink: 0;">
+                                ${isBlocked ? `
+                                    <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                                        <i class="fas fa-ban" style="font-size: 9px;"></i> Blocked
+                                    </span>
+                                ` : `
+                                    <span style="background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                                        <i class="fas fa-check-circle" style="font-size: 9px;"></i> Active
+                                    </span>
+                                `}
                             </div>
                         </div>
-                        <div style="text-align: right; flex-shrink: 0; margin-left: 10px;">
-                            ${isBlocked ? `
-                                <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
-                                    <i class="fas fa-ban" style="font-size: 10px;"></i> Blocked
-                                </span>
-                            ` : `
-                                <span style="background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
-                                    <i class="fas fa-check-circle" style="font-size: 10px;"></i> Active
-                                </span>
-                            `}
+
+                        <!-- Contact & Date Row -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #f1f5f9; font-size: 11px; color: var(--gray);">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-phone-alt" style="font-size: 10px; opacity: 0.7;"></i>
+                                <span>${escapeHtml(maskedPhone)}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <i class="far fa-calendar-alt" style="font-size: 10px; opacity: 0.7;"></i>
+                                <span>${escapeHtml(formattedDate)}</span>
+                            </div>
                         </div>
+
+                        <!-- PER-USER EARNING BOX -->
+                        ${u.earnedFromUser > 0 ? `
+                            <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.12) 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 10px 14px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 11px; font-weight: 700; color: #065f46; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-coins" style="color: #10b981;"></i> Income From This User
+                                    </div>
+                                    <div style="font-size: 11px; color: #047857; margin-top: 3px; font-weight: 500;">
+                                        ${u.breakdownText}
+                                    </div>
+                                </div>
+                                <div style="text-align: right; flex-shrink: 0; margin-left: 10px;">
+                                    <div style="font-size: 18px; font-weight: 800; color: #047857;">+₹${u.earnedFromUser}</div>
+                                    <div style="font-size: 10px; font-weight: 700; color: #059669; text-transform: uppercase;">Total Credited</div>
+                                </div>
+                            </div>
+                        ` : `
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 9px 12px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 11px; font-weight: 600; color: var(--gray);">Income From This User</div>
+                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">No plan purchased yet (Earn ${u.commRate}% on purchase)</div>
+                                </div>
+                                <div style="text-align: right; flex-shrink: 0; margin-left: 10px;">
+                                    <div style="font-size: 16px; font-weight: 700; color: var(--gray);">₹0</div>
+                                    <div style="font-size: 10px; color: #94a3b8;">Pending</div>
+                                </div>
+                            </div>
+                        `}
                     </div>
                 `;
             });
