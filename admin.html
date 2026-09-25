@@ -213,7 +213,6 @@
             <div class="sidebar-nav">
                 <div class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard"><i class="fas fa-home"></i> <span>Dashboard</span></div>
                 <div class="nav-item" onclick="showPage('users')" data-page="users"><i class="fas fa-users"></i> <span>Users</span> <span class="nav-badge" id="badgeUsers">0</span></div>
-                <div class="nav-item" onclick="showPage('leaderboard')" data-page="leaderboard"><i class="fas fa-trophy"></i> <span>Leaderboard</span></div>
                 <div class="nav-item" onclick="showPage('plans')" data-page="plans"><i class="fas fa-gem"></i> <span>Plans</span></div>
                 <div class="nav-item" onclick="showPage('deposits')" data-page="deposits"><i class="fas fa-arrow-down"></i> <span>Deposits</span> <span class="nav-badge" id="badgeDeposits">0</span></div>
                 <div class="nav-item" onclick="showPage('withdrawals')" data-page="withdrawals"><i class="fas fa-arrow-up"></i> <span>Withdrawals</span> <span class="nav-badge" id="badgeWithdrawals">0</span></div>
@@ -260,45 +259,6 @@
                                 </tr>
                             </thead>
                             <tbody id="usersTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Leaderboard Page - NEW -->
-            <div id="leaderboardPage" class="admin-page">
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-trophy" style="color: #f59e0b;"></i> Top Rankings & Leaderboard</h3>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn-main btn-primary" id="adminRankBtnEarn" onclick="switchAdminRank('earning')"><i class="fas fa-coins"></i> Top Earners</button>
-                            <button class="btn-main btn-secondary" id="adminRankBtnRef" onclick="switchAdminRank('refer')"><i class="fas fa-users"></i> Top Referrers</button>
-                        </div>
-                    </div>
-                    <p style="color: var(--gray); font-size: 13px; margin-bottom: 20px;">Live rankings across platform members. Showing First, Second, Third podium leaders and full ranking order.</p>
-                    
-                    <!-- Admin Podium Grid -->
-                    <div id="adminPodiumGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px;">
-                        <!-- Injected via JavaScript -->
-                    </div>
-
-                    <!-- Rankings Data Table -->
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 80px;">Rank</th>
-                                    <th>User</th>
-                                    <th>Phone</th>
-                                    <th>Total Earnings</th>
-                                    <th>Total Referrals</th>
-                                    <th>Active Plans</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminLeaderboardTableBody">
-                                <!-- Injected via JavaScript -->
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -689,7 +649,6 @@
             document.getElementById('sidebarOverlay').classList.remove('active');
             
             if(page==='users') loadUsers();
-            if(page==='leaderboard') loadAdminLeaderboard();
             if(page==='plans') loadPlansPage();
             if(page==='deposits') { showDepositTab('pending'); loadDeposits(); }
             if(page==='withdrawals') { showWithdrawTab('pending'); loadWithdrawals(); }
@@ -757,7 +716,6 @@
                 };
                 updateDashboard();
                 if(document.getElementById('usersPage').classList.contains('active')) loadUsers();
-                if(document.getElementById('leaderboardPage').classList.contains('active')) loadAdminLeaderboard();
                 if(document.getElementById('plansPage').classList.contains('active')) loadPlansPage();
                 if(document.getElementById('depositsPage').classList.contains('active')) loadDeposits();
                 if(document.getElementById('withdrawalsPage').classList.contains('active')) loadWithdrawals();
@@ -1047,164 +1005,6 @@
                 showToast('User status updated');
             } catch(e) {
                 showToast('Error updating status: ' + e.message, 'error');
-            }
-        }
-
-        // ==================== ADMIN LEADERBOARD & RANKINGS ====================
-        let adminRankCategory = 'earning'; // 'earning' | 'refer'
-
-        function switchAdminRank(cat) {
-            adminRankCategory = cat;
-            const btnEarn = document.getElementById('adminRankBtnEarn');
-            const btnRef = document.getElementById('adminRankBtnRef');
-            if(btnEarn && btnRef) {
-                if(cat === 'earning') {
-                    btnEarn.className = 'btn-main btn-primary';
-                    btnRef.className = 'btn-main btn-secondary';
-                } else {
-                    btnRef.className = 'btn-main btn-primary';
-                    btnEarn.className = 'btn-main btn-secondary';
-                }
-            }
-            loadAdminLeaderboard();
-        }
-
-        function loadAdminLeaderboard() {
-            const users = Object.values(appData.users || {});
-            
-            // Map referral codes to total referrals count
-            const referCountMap = new Map();
-            users.forEach(u => {
-                const refBy = (u.referredBy || '').trim().toUpperCase();
-                if(refBy) {
-                    referCountMap.set(refBy, (referCountMap.get(refBy) || 0) + 1);
-                }
-            });
-
-            const processed = users.map(u => {
-                const code = (u.referralCode || '').trim().toUpperCase();
-                const matchedRefs = code ? (referCountMap.get(code) || 0) : 0;
-                const totalRefers = Math.max(matchedRefs, Number(u.referrals?.count) || 0);
-
-                const refEarnings = Number(u.referrals?.earnings) || 0;
-                const mainBal = Number(u.wallet?.mainBalance) || 0;
-                const withdrawn = Number(u.totalWithdrawn) || 0;
-
-                let plansProfit = 0;
-                let activePlansCount = 0;
-                if(u.activePlans) {
-                    Object.values(u.activePlans).forEach(p => {
-                        if(p && p.status !== 'cancelled' && p.status !== 'rejected') {
-                            activePlansCount++;
-                            plansProfit += Number(p.totalClaimed) || 0;
-                        }
-                    });
-                }
-
-                const totalEarned = Math.max(refEarnings + mainBal + withdrawn, plansProfit + refEarnings);
-
-                return {
-                    id: u.id,
-                    name: u.name || 'Unknown',
-                    phone: u.phone || '--',
-                    totalEarned: totalEarned,
-                    totalRefers: totalRefers,
-                    activePlansCount: activePlansCount,
-                    status: u.status || 'active'
-                };
-            });
-
-            const combined = [...processed];
-
-            // Sort
-            if(adminRankCategory === 'earning') {
-                combined.sort((a, b) => b.totalEarned - a.totalEarned);
-            } else {
-                combined.sort((a, b) => b.totalRefers - a.totalRefers);
-            }
-
-            // Assign ranks
-            combined.forEach((u, idx) => u.rank = idx + 1);
-
-            // Render Podium Grid for Top 3
-            const podiumGrid = document.getElementById('adminPodiumGrid');
-            if(podiumGrid) {
-                if(combined.length === 0) {
-                    podiumGrid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 25px; color: var(--gray); background: white; border-radius: 16px; border: 1px dashed #cbd5e1;">No users registered in database yet.</div>`;
-                } else {
-                    const top3 = combined.slice(0, 3);
-                    podiumGrid.innerHTML = top3.map((u, i) => {
-                        let medal = '🥇 Gold Champion';
-                        let borderCol = '#f59e0b';
-                        let bgCol = 'linear-gradient(135deg, #fef3c7 0%, #fff 100%)';
-                        if(i === 1) {
-                            medal = '🥈 Silver Runner-up';
-                            borderCol = '#94a3b8';
-                            bgCol = 'linear-gradient(135deg, #f1f5f9 0%, #fff 100%)';
-                        } else if(i === 2) {
-                            medal = '🥉 Bronze 3rd Place';
-                            borderCol = '#d97706';
-                            bgCol = 'linear-gradient(135deg, #ffedd5 0%, #fff 100%)';
-                        }
-
-                        const score = adminRankCategory === 'earning' ? `₹${u.totalEarned.toLocaleString('en-IN')}` : `${u.totalRefers} Members`;
-                        const subScore = adminRankCategory === 'earning' ? `${u.totalRefers} Referrals` : `₹${u.totalEarned.toLocaleString('en-IN')} Earned`;
-
-                        return `
-                            <div class="stat-card" style="border: 2px solid ${borderCol}; background: ${bgCol}; position: relative;">
-                                <div style="font-size: 12px; font-weight: 800; color: ${borderCol}; text-transform: uppercase; margin-bottom: 8px;">
-                                    ${medal}
-                                </div>
-                                <div style="font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 4px;">
-                                    ${escapeHtml ? escapeHtml(u.name) : u.name}
-                                </div>
-                                <div style="font-size: 12px; color: var(--gray); margin-bottom: 12px;">
-                                    ${u.phone}
-                                </div>
-                                <div style="font-size: 24px; font-weight: 900; color: ${adminRankCategory === 'earning' ? 'var(--success)' : 'var(--primary)'};">
-                                    ${score}
-                                </div>
-                                <div style="font-size: 11px; color: var(--gray); margin-top: 4px;">
-                                    Secondary: ${subScore}
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            }
-
-            // Render Table
-            const tbody = document.getElementById('adminLeaderboardTableBody');
-            if(tbody) {
-                tbody.innerHTML = combined.map(u => {
-                    let rankBadge = `<span style="background: #f1f5f9; color: var(--gray); font-weight: 800; padding: 4px 10px; border-radius: 8px;">#${u.rank}</span>`;
-                    if(u.rank === 1) rankBadge = `<span style="background: #fef08a; color: #854d0e; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1px solid #facc15;">🥇 #1</span>`;
-                    else if(u.rank === 2) rankBadge = `<span style="background: #e2e8f0; color: #334155; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1px solid #cbd5e1;">🥈 #2</span>`;
-                    else if(u.rank === 3) rankBadge = `<span style="background: #fed7aa; color: #9a3412; font-weight: 800; padding: 4px 10px; border-radius: 8px; border: 1px solid #fdba74;">🥉 #3</span>`;
-
-                    return `
-                        <tr>
-                            <td>${rankBadge}</td>
-                            <td>
-                                <div style="font-weight: 700; color: var(--dark);">${u.name}</div>
-                                <div style="font-size: 11px; font-family: monospace; color: var(--gray);">${u.id}</div>
-                            </td>
-                            <td>${u.phone}</td>
-                            <td>
-                                <span style="font-weight: 800; color: var(--success); font-size: 15px;">₹${u.totalEarned.toLocaleString('en-IN')}</span>
-                            </td>
-                            <td>
-                                <span style="font-weight: 800; color: var(--primary); font-size: 15px;">${u.totalRefers}</span>
-                            </td>
-                            <td>
-                                <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;">${u.activePlansCount} Plans</span>
-                            </td>
-                            <td>
-                                <span class="status-badge status-${u.status}">${u.status}</span>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
             }
         }
 
